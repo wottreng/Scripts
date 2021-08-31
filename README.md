@@ -1,2 +1,2 @@
 # Scripts
-helpful scripts
+helpful scripts for linux server management

@@ -1,0 +1,16 @@
+#!/usr/bin/python3
+import os 
+import time 
+vidDir = os.getcwd()
+fileList = os.listdir(vidDir)
+maxAge = 60*60*24*4 #4 days
+#print(fileList)
+for fileName in fileList:
+  if os.path.isfile(f"{vidDir}/{fileName}"):
+    #print(fileName)
+    fileStat = os.stat(f"{vidDir}/{fileName}")
+    fileAge = (time.time()-fileStat.st_mtime)
+    #print(fileAge)
+    if float(fileAge)>maxAge:
+      print(f"[*]remove file: {fileName}")
+      #os.remove(f"{vidDir}/{fileName}")
