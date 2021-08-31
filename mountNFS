@@ -1,0 +1,19 @@
+#!/usr/bin/python3
+import os
+
+NFSname = "nfsName"
+NFSipAddr = "1.2.3.4"
+NFSremoteMountPoint = f"{NFSipAddr}:/mnt/{NFSname}"
+nfsMountPoint = "/media/yourName/mountDir"
+
+ismounted = os.popen(f"mount | grep {NFSname}").read()
+# print(ismounted)
+if f"{NFSipAddr}:/mnt/{NFSname}" in ismounted:
+  print("nfs is mounted")
+  print("unmounting nfs now")
+  os.system(f"sudo umount {NFSremoteMountPoint}")
+else:
+  print("nfs is not mounted")
+  print("mounting nfs now")
+  os.system(f"sudo mount -t nfs {NFSremoteMountPoint} {nfsMountPoint}")
+print("[*] done [*]")

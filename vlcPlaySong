@@ -1,0 +1,2 @@
+#!/bin/bash
+nvlc ~/Music/someSong.mp3
