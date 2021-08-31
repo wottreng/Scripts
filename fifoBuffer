@@ -1,0 +1,9 @@
+#!/usr/bin/python3
+#create fifo buffer file to write and read from
+#this can be used to allow different programs to talk 
+#version 1.0
+import os
+print('creating fifo buffer file: buff0')
+os.system('mkfifo /tmp/buff0')
+quit()
+#

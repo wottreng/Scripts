@@ -1,0 +1,8 @@
+# screen is used for multiple console sessions
+# sudo apt install screen
+screen #create new screen
+screen -ls # list current sessions
+screen -r xxxx # attach to running session
+ctrl+A then 'd' #detach from session
+screen -S session_name # name new session
+Ctrl-a + k: It close the current windows (kill).

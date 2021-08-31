@@ -1,0 +1,40 @@
+#!/usr/bin/python3
+#nc 127.0.0.1 6969
+#busybox nc -l 127.0.0.1 -p 8888
+#netcat -lv 127.0.0.1 8888
+#busybox nc -l -p 8888 this creates outward facing port to serve file/connection
+
+#v1.0 tested works
+#send GET request
+import os
+import time
+print('sending GET request with busybox netcat')
+#printf 'GET /my-subdir/ HTTP/1.1\n\n' | nc localhost 8000
+
+req ='printf \'GET / HTTP/1.0\n\n\''
+response = ''
+x=1
+while response == '':
+    print('try number: ',x)
+    response = os.popen(req+' | nc 192.168.100.100 6969').read()
+    x+=1
+response = response.split()
+#print(response)
+output = response.index('Machine')
+#print(output)
+#print(response[output+2])
+cond = response[output+2][3:6]
+print(cond)
+print('\nRequest Complete')
+
+print('End of script')
+#print('html server started')
+#os.system('printf "HTTP/1.1 200 OK\n\n%s" "$(cat ~/projects/router/router.html)" | busybox nc -l -p 8888')
+#os.system('printf "HTTP/1.1 200 OK\n\n%s" "$(cat ~/.local/bin/sys0)" | busybox nc -l -p 8888')
+#os.system('busybox nc -l -p 8888 -e /bin/bash') #provide shell to connection
+#to make site persistant
+#while 1:
+#	os.system('printf "HTTP/1.1 200 OK\n\n%s" "$(cat ~/projects/router/router.html)" | netcat -lv 127.0.0.1 8888')
+#os.system('sudo ufw delete allow 8888/tcp')
+
+quit()

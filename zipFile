@@ -1,0 +1,11 @@
+#!/usr/bin/python3
+import os
+fileIn = input('file to zip: ')
+fileOut = input('zip file name: ')
+curdir = os.getcwd()
+#fileIn = os.popen('find {} -name {} 2>/dev/null'.format(curdir, fileName)).read()
+if fileIn != '':
+  os.system('zip -r {}.zip {}'.format(fileOut,fileIn))
+  print('finished')
+else: 
+  print('error: *{}*'.format(fileIn))

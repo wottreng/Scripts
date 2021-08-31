@@ -1,0 +1,40 @@
+#!/usr/bin/python3
+
+#busybox nc -l 127.0.0.1 -p 8888
+#netcat -lv 127.0.0.1 8888
+#busybox nc -l -p 8888 this creates outward facing port to serve file/connection
+
+#create a port to listen for tcp connection and serve html file
+import os
+import time
+print('server listening on port 8888')
+
+#print('opening port 8888 in firewall')
+#***os.system('sudo ufw allow 8888/tcp')
+
+#print('html server started')
+#os.system('printf "HTTP/1.1 200 OK\n\n%s" "$(cat ~/projects/router/router.html)" | busybox nc -l -p 8888')
+#os.system('printf "HTTP/1.1 200 OK\n\n%s" "$(cat ~/.local/bin/sys0)" | busybox nc -l -p 8888')
+#os.system('busybox nc -l -p 8888 -e /bin/bash') #provide shell to connection
+#os.system('printf "HTTP/1.1 200 OK\n\n%s" "received" | busybox nc -l -p 8888')
+#print(os.getcwd())
+
+#to make site persistant
+x=True
+while x==True:
+#	os.system('printf "HTTP/1.1 200 OK\n\n%s" "$(cat ~/projects/router/router.html)" | netcat -lv 127.0.0.1 8888')
+	#os.system('printf "HTTP/1.1 200 OK\n\n%s" "received" | busybox nc -l -p 8888 > /tmp/buff0')
+	#Notes: will not receive unless you 'cat' the buffer
+	#.system('printf "HTTP/1.1 200 OK\n\n%s" "received" | busybox nc -l -p 8888 >> stuffff')
+	#Notes: write all data to doc stuffff
+	
+	msg = ''
+	msg = os.popen('printf "HTTP/1.1 200 OK\n\n%s" "received" | busybox nc -l -p 8888').read()
+	msg = msg.split()[1]
+	print(msg)
+	#Notes: receives query paramaters from nc ***
+	x=False
+
+#***os.system('sudo ufw delete allow 8888/tcp')
+
+quit()

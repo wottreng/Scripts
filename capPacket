@@ -1,0 +1,15 @@
+#!/usr/bin/python3
+import os
+
+#tcpdump -D  : list interfaces
+# w:save packet info, nn:show ip addr,c:num of packet to catch,A:print pack info
+# d:print info in human readable, 
+#sudo tcpdump -i wlp2s0  : capture wifi packets
+#sudo tcpdump -i wlp2s0 -c 100  : capture 100 packets
+#sudo tcpdump -i wlp2s0 -nn : shows ip address instead of names
+#sudo tcpdump -i wlp2s0 -nnA port 80 
+#(-I) for promiscous mode
+#(port 80 and port 443) for listening to select ports
+#(#): print line numbers
+os.system('sudo tcpdump -i wlp2s0 -nnAd')
+quit()

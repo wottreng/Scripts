@@ -1,0 +1,7 @@
+#!/usr/bin/python3
+#open tcp port 2222
+import os
+#----
+print('opening 127.0.0.1 port 2222')
+os.system('busybox nc -l 127.0.0.1 -p 2222')
+#quit()

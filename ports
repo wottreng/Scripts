@@ -1,0 +1,42 @@
+#!/usr/bin/python3
+#script to turn off listening ports
+#version 1.2
+import os
+import time
+from termcolor import colored
+
+os.system('sudo netstat -tulpn') # | grep LISTEN')
+x=input('turn off cups ports?\ntype 1 for yes ')
+try:
+	if int(x)==1:
+		print('turning off cups ports')
+		os.system('sudo service cups stop')
+		#os.system('sudo service rpcbind stop')
+		#os.system('sudo systemctl stop systemd-resolved')
+		os.system('sudo netstat -tulpn | grep LISTEN')
+	else:print('no action taken')
+except: print('no action taken')
+#======================================
+x=input('do you want to kill a pid? ')
+try:
+	if int(x)==1:
+		y=input('what pid to kill? ')
+		os.system('kill -9 '+y)
+		print('killed pid: '+y)
+		#time.sleep(1)
+		os.system('sudo netstat -tulpn')
+	else : print('no action taken c1')
+except: print('no action taken c0')
+#======================================
+#print('checking firewall status')
+#os.system('sudo ufw status')
+#status = os.popen('sudo ufw status').read().split()[1]
+#print('fire wall status: ',status)
+#if status == 'inactive':
+#	print(colored('firewall found inactive, starting firewall','red'))
+#	os.system('sudo ufw enable')
+#	status = os.popen('sudo ufw status').read().split()[1]
+#	print('fire wall status: ',status)
+#==========================================
+print('ports rev 1.2')
+quit()

@@ -1,0 +1,105 @@
+#!/usr/bin/python3
+#version 1.0
+import os
+
+# ls -A | wc -l  #list almost all files and count lines
+# find . -type f #find files
+# find . -type d #find directories
+# find . -type f | wc -l # count files
+# os.system('find . -maxdepth 1 -type d | wc -l')
+# du -h: disk used, df -h: disk free
+#
+#filter for consolidateDir
+newDir= 'consolidateDir'
+#show number of files and dirs-----------------
+dirs=os.popen('find . -maxdepth 1 -type d | wc -l').read()
+print('directories: ',int(dirs)-1)
+fils=os.popen('find . -maxdepth 1 -type f | wc -l').read()
+#print('files: ',int(fils))
+# directory list------------
+dirlist=os.popen('find . -maxdepth 1 -type d ').read().split('\n')
+#print(dirlist)
+dirlist.remove('')
+dirlist.remove('.')
+#print('directories: ',dirlist)
+# files list-----------------
+fillist=os.popen('find . -maxdepth 1 -type f').read().split('\n')
+fillist.remove('')
+#print(fillist)
+# get list of all files in directories-------------------
+alllist=os.popen('find . -mindepth 2 -type f').read() .split('\n')
+alllist.remove('')
+print('number of files in directories: ',len(alllist))
+#print(alllist)
+# get  current directory-------------
+curdir=os.popen('pwd').read()
+print('current dir: ',curdir.strip())
+#check for spaces in dir----------
+whitespace=curdir.strip().find(' ')
+if (whitespace>0):
+        lst=curdir.strip().split(' ')
+        #print(lst)
+        fs=lst[0].rfind('/')
+        ast=lst[0][:fs+1]+'\''+lst[0][fs+1:]
+        fs=lst[1].find('/')
+        bst=' '+lst[1][:fs]+'\''+lst[1][fs:]
+        #print(ast+bst)
+        curdir=ast+bst
+        print('current dir changed to: '+curdir)
+
+# make new dir
+os.system('mkdir '+newDir)
+#move  movie files inside dirs to new dir------------
+x=0
+while x<len(alllist):
+	#print(alllist[x])
+	fileType = alllist[x][-4:]
+	#print(fileType)
+	if fileType == '.avi' or fileType == '.AVI' or fileType == '.mp4' or fileType == '.mkv' or fileType == '.wmv' or fileType == '.flv' or fileType == '.m4v':
+		#filter for ' ------------------
+		if(alllist[x].find('\'')>0):
+			ast=alllist[x].split('/')
+			print(ast)
+			z=0
+			bst=''
+			while z<len(ast):
+				if(ast[z].find('\'')>0):
+					ast[z]='\"'+ast[z]+'\"'
+				bst+=ast[z]+'/'
+				z+=1
+			bst=bst[:len(bst)-1]
+			print('zzzzzz '+bst)
+		#filter for spaces------------------
+		if(alllist[x].find(' ')>0):
+			#filter for multiple spaces
+			ast=alllist[x].split('/')
+			print(ast)
+			z=0
+			bst=''
+			while z<len(ast):
+				if(ast[z].find(' ')>0):
+					ast[z]='\"'+ast[z]+'\"'
+				bst+=ast[z]+'/'
+				z+=1
+			bst=bst[:len(bst)-1]
+			print('ggggg '+bst)
+			#print(bst)
+		else:bst=alllist[x]
+		#move file-----------------------------
+		#comm='cp \''+alllist[x]+'\' '+curdir
+		comm='mv '+bst+' '+curdir
+		comm=comm.replace('\n','')
+		comm+='/'+newDir+'/'
+		per=(x+1)/len(alllist)
+		output= '[Percent Complete] '+str(round(per,2))
+		print(output) #,end='\r')
+		print(comm)
+		try:
+			os.system(comm)
+			print('--------------------------------')
+		except:print('ERROR')
+	x+=1
+
+print('[Finished]')
+exit()
+

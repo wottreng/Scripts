@@ -1,0 +1,15 @@
+#!/usr/bin/python3
+import os
+import time
+
+movie = 'someMovie.m4v'
+#usrinpt = 'are you ready to watch the movie?'
+#os.system('espeak -v english-us -p 40 -s 130 \''+usrinpt+'\'')
+x = input('movie on deck: {}'.format(movie))
+if True:
+	print('finding movie now...')
+	results = os.popen('find / -name '+movie+' 2>/dev/null ').read().strip()
+	print('movie found at '+results)
+	print('opening movie now')
+	time.sleep(1)
+	os.system('xdg-open '+results+' &>/dev/null')

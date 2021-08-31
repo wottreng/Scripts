@@ -1,0 +1,10 @@
+#!/usr/bin/python3
+import os
+
+a = '0xff'
+print(int(a,16))
+
+b= 123
+print(hex(b))
+
+quit()

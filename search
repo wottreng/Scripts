@@ -1,0 +1,8 @@
+#!/usr/bin/python3
+import os
+thing = input('what do you want to search for: ')
+command = 'find / -name '+thing+' 2>/dev/null '
+#print(command)
+os.system(command)
+#print(output)
+quit()

@@ -1,0 +1,45 @@
+#!/usr/bin/python3
+#background: allows background formatting. Accepts ANSI codes between 40 and 47, 100 and 107
+#style_text: corresponds to formatting the style of the text. Accepts ANSI code between 0 and 8
+#color_text:  Corresponds to the text of the color. Accepts ANSI code between 30 and 37, 90 and 97
+
+class ANSI():
+    def background(code):
+        return f"\33[{code}m"
+  
+    def style_text(code):
+        return f"\33[{code}m"
+  
+    def color_text(code):
+        return f"\33[{code}m"
+  
+  
+example_ansi = ANSI.background(97) + ANSI.color_text(35) + ANSI.style_text(4) + " TESTE ANSI ESCAPE CODE"
+print("---background----")
+x=40
+while x<48:
+  print(ANSI.style_text(x) + f"style code {x}")
+  x+=1
+#print("---background----")
+x=100
+while x<108:
+  print(ANSI.style_text(x) + f"style code {x}")
+  x+=1
+
+
+print("------color text----")
+x=30
+while x<38:
+  print(ANSI.color_text(x) + f"code {x}")
+  x+=1
+x=90
+while x<98:
+  print(ANSI.color_text(x) + f"code {x}")
+  x+=1
+print("---style----")
+x=0
+while x<9:
+  print(ANSI.style_text(x) + f"style code {x}")
+  x+=1
+
+print('---------------')

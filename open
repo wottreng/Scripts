@@ -1,0 +1,18 @@
+#!/usr/bin/python3
+#script to open files using xdg-open cmd
+import os
+#======================================
+curdir = os.popen('pwd').read().split()
+print('dir ',curdir)
+list = os.popen('ls ' + curdir[0]).read().split('\n')
+print(list)
+filenum = input('which file do you want to open? (#) ')
+file = '\''+list[int(filenum)]+'\''
+print('opening '+file)
+command = 'xdg-open '+ file
+#print(command)
+os.system(command)
+#======================================
+print('open rev 1.1')
+quit()
+

@@ -1,0 +1,15 @@
+#!/usr/bin/python3
+#sudo apt-get install lm-sensors, then sudo sensors-detect, then type 'sensors' for output
+#version 1.2
+import os
+import time
+while 1:
+	output = os.popen('sensors').read()
+	#temp1 = temps[1] #first temp
+	#temp2 = temps[9]
+	#temp3 = temps[14]
+	#output = 'cpu temperature: '+ temp1+' '+temp2+' ' +temp3
+	print(output,end='\r')
+	time.sleep(1)
+
+quit()

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#list current routes
+ip route list
+
+#remove default: this will kick you offline
+ip route del default
+
+#Add a new default route (this will bring you back online). Replace 192.168.1.1, below, with your gateway ip address from above. 
+ip route add default via 192.168.1.1 dev eth1
+
+#Add a specific route that will be served by eth0. More-specific routes automatically take precedence over less-specific ones.
+ip route add 192.168.10.0/24 via 192.168.1.1 dev eth0
+
+#find default route for request
+ip route get 8.8.8.8
+
+

@@ -1,0 +1,12 @@
+#!/usr/bin/python3
+import os
+
+badLinks = os.popen("find . -xtype l").read()
+badLinks = badLinks.split()
+print(f"{badLinks}\n------------")
+for line in badLinks:
+  os.system(f"rm {line}")
+  print(f"removed:{line}")
+print("[*]cleared bad links[*]")
+
+
