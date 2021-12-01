@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# make sure you have nfs utils: sudo apt install nfs-common
 import os
 
 NFSname = "nfsName"
