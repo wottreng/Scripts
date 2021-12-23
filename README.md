@@ -34,3 +34,5 @@ helpful scripts for various Linux operations
 ## ports
 * show which ports are active and listening as well as the programs attached
 
+## setupVPN
+* turn on/off client wireguard vpn, assuming config `wg0` is setup in `/etc/wireguard/`
