@@ -1,0 +1,16 @@
+#!/usr/bin/python3
+import os
+
+net_config = os.popen("ifconfig").read()
+# print(net_config)
+if "wg0" not in net_config:
+    print('setting up VPN wg0...')
+    os.system("sudo wg-quick up wg0")
+    # os.system("echo 'nameserver 10.10.10.1' | sudo tee /etc/resolv.conf")
+else:
+    print("disable VPN wg0...")
+    os.system("sudo wg-quick down wg0")
+    # os.system("echo 'nameserver 127.0.0.53 \noptions edns0 trust-ad \nsearch lan' | sudo tee /etc/resolv.conf")
+    # nameserver 127.0.0.53 \n options edns0 trust-ad \n search lan
+
+quit()
