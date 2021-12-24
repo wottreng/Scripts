@@ -1,6 +1,9 @@
 # Scripts
 helpful scripts for various Linux operations
 
+## terminal_color_setup.sh
+* creates .dircolors config file for custom cmd line colors
+
 ## capPacket
 * tcp dump wifi packets for inspection
 
