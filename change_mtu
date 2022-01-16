@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+# show current interface setup and mtu
+ip link
+
+# ip link set dev *interface* mtu 1420
+ip link set dev wwan0 mtu 1420
